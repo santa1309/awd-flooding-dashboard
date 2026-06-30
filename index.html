@@ -782,9 +782,14 @@ function colorFor(v,val){
   let i=0; while(i<v.breaks.length && val>v.breaks[i]) i++; return v.colors[i];
 }
 let curKey='total';
-const map=L.map('map',{zoomControl:true,attributionControl:false});
+const map=L.map('map',{zoomControl:true,attributionControl:true});
+// Esri World Imagery satellite basemap (free, no API key) + place labels
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+  {maxZoom:19,attribution:'Imagery © Esri, Maxar, Earthstar Geographics'}).addTo(map);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+  {maxZoom:19,opacity:0.9}).addTo(map);
 function styleFn(f){const v=varByKey[curKey];return{
-  fillColor:colorFor(v,f.properties[curKey]),fillOpacity:.85,color:'#0b0e12',weight:.4};}
+  fillColor:colorFor(v,f.properties[curKey]),fillOpacity:.62,color:'#11161d',weight:.4};}
 const fidLayer={};
 const layer=L.geoJSON(D.geojson,{style:styleFn,onEachFeature:(f,l)=>{
   fidLayer[f.properties.FID]=l;
